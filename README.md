@@ -11,7 +11,8 @@
 
 ## 📷 Vista previa
 
-![Vista previa del sitio](./public/images/sitio.jpeg)
+![Vista previa del sitio](images/sitio.jpeg)
+
 
 ## 🔧 Instalación del proyecto
 
