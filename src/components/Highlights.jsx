@@ -1,82 +1,113 @@
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { FaMusic, FaCode } from "react-icons/fa";
 
-const highlights = [
-  " Álbum 'particles of sorrow Edm.",
-  "Manejo Avanzado de Angular 16",
-  "Beats Originales, capas de secuencias  ",
-  " Autenticación ",
-  " Panel administrativo con gráficos y gestión de usuarios",
-  " Composición de Letras",
-  " Profesional de FL Studio para mezclas y mastering",
-  " Diseño Experiencia UI/UX",
-  " Desarrollo React Vite",
-  " Proyectos en constante evolución con enfoque ágil",
-];
+export default function MyShowcase() {
+  const { scrollYProgress } = useScroll();
+  const gradient = useTransform(scrollYProgress, [0, 1], ["#ec4899", "#8b5cf6"]);
+  const titleOpacity = useTransform(scrollYProgress, [0.1, 0.3], [0, 1]);
+  const titleY = useTransform(scrollYProgress, [0.1, 0.3], [-80, -30]);
 
-const container = {
-  hidden: {},
-  show: {
-    transition: {
-      staggerChildren: 0.2, 
-    },
-  },
-};
-
-const item = {
-  hidden: { opacity: 0, y: 30 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
-};
-
-function Highlights() {
   return (
-    <section
-      id="highlights"
-      className="min-h-screen flex items-center text-white"
+    <motion.section
       style={{
-        background: "linear-gradient(to bottom, #7c3df2, #f238a5)",
+        backgroundImage: "url('/images/auriculares.jpg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundAttachment: "fixed",
       }}
+      className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden px-6 py-20 text-white"
     >
-      <div className="container mx-auto flex flex-col md:flex-row items-center justify-between px-4 py-20 gap-8">
-        {/* Imagen lado izquierdo */}
-        <motion.div
-          initial={{ opacity: 0, x: -100 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 1 }}
-          viewport={{ once: false, amount: 0.5 }}
-          className="flex justify-center md:justify-start"
-        >
-          <img
-            src="images/4529196.png"
-            alt="Intro Personaje"
-            className="w-full md:w-[800px] max-w-none mix-blend-lighten opacity-95 backdrop-blur-sm transition duration-500"
-          />
-        </motion.div>
+      {/* Capa gradiente principal */}
+      <motion.div
+        style={{ background: gradient }}
+        className="absolute inset-0 z-0 opacity-30 bg-black"
+      ></motion.div>
 
-        {/* Texto lado derecho con lista animada */}
+      {/* Desvanecido arriba */}
+      <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-black to-transparent z-10"></div>
+      {/* Desvanecido abajo */}
+      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-black to-transparent z-10"></div>
+
+      {/* Contenido */}
+      <div className="relative z-20 max-w-5xl w-full mx-auto flex flex-col md:flex-row gap-12">
+        {/* Bloque Música */}
         <motion.div
-          initial="hidden"
-          whileInView="show"
-          variants={container}
-          viewport={{ once: false, amount: 0.4 }}
-          className="text-center md:text-left"
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+          viewport={{ once: true }}
+          className="flex-1"
         >
-          <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
-            Proyectos y Logros Destacados
-          </h1>
-          <p className="text-lg md:text-xl max-w-xl mx-auto md:mx-0 mb-6">
-            Desde beats con alma hasta sistemas inteligentes, combino creatividad y técnica.
-          </p>
-          <motion.ul className="space-y-2 text-left list-disc list-inside">
-            {highlights.map((text, idx) => (
-              <motion.li key={idx} variants={item}>
-                {text}
+          <motion.h2
+            style={{ opacity: titleOpacity, y: titleY }}
+            className="flex items-center gap-3 text-3xl md:text-4xl font-bold mb-6 drop-shadow text-center md:text-left"
+          >
+            <FaMusic className="text-white" size={32} />
+            Mente & Alma
+          </motion.h2>
+
+          <ul className="space-y-4">
+            {[
+              "Composición & Producción",
+              "Beatmaking",
+              "Grabación & Mastering",
+              "Distribución Digital",
+              "Sonido Experimental",
+            ].map((item, idx) => (
+              <motion.li
+                key={idx}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: idx * 0.15 }}
+                className="flex items-center gap-3 text-lg md:text-xl"
+              >
+                <span className="w-3 h-3 rounded-full shrink-0 bg-gradient-to-r from-blue-400 to-green-400"></span>
+                <span className="drop-shadow">{item}</span>
               </motion.li>
             ))}
-          </motion.ul>
+          </ul>
+        </motion.div>
+
+        {/* Bloque Tech */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.2 }}
+          viewport={{ once: true }}
+          className="flex-1"
+        >
+          <motion.h2
+            style={{ opacity: titleOpacity, y: titleY }}
+            className="flex items-center gap-3 text-3xl md:text-4xl font-bold mb-6 drop-shadow text-center md:text-left"
+          >
+            <FaCode className="text-green-400" size={32} />
+            Desarrollo & Código
+          </motion.h2>
+
+          <ul className="space-y-4">
+            {[
+              "Frontend & Backend",
+              "APIs Musicales",
+              "UX/UI Interactivo",
+              "Integración Digital",
+              "Automatización & Data",
+            ].map((item, idx) => (
+              <motion.li
+                key={idx}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: idx * 0.15 }}
+                className="flex items-center gap-3 text-lg md:text-xl"
+              >
+                <span className="w-3 h-3 rounded-full shrink-0 bg-gradient-to-r from-blue-400 to-green-400"></span>
+                <span className="drop-shadow">{item}</span>
+              </motion.li>
+            ))}
+          </ul>
         </motion.div>
       </div>
-    </section>
+    </motion.section>
   );
 }
-
-export default Highlights;

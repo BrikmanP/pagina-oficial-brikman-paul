@@ -13,6 +13,7 @@ const navLinks = [
 
 function Header() {
   const [scrolled, setScrolled] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const controls = useAnimation();
   const contentControls = useAnimation();
 
@@ -52,6 +53,10 @@ function Header() {
     }
   }, [scrolled]);
 
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
+
   return (
     <motion.header
       animate={controls}
@@ -64,7 +69,7 @@ function Header() {
       }}
     >
       <div className="container mx-auto px-4 py-4 flex justify-between items-center font-[Inter]">
-        {/* Degradado animado en el nombre */}
+        {/* Logo */}
         <motion.h1
           className="text-2xl font-bold bg-gradient-to-r from-purple-600 via-pink-500 to-yellow-400 bg-clip-text text-transparent animate-gradient"
           animate={contentControls}
@@ -73,8 +78,39 @@ function Header() {
           Brikman Paul
         </motion.h1>
 
-        {/* Menú limpio y sin bordes */}
-        <div className="flex space-x-6">
+        {/* Botón hamburguesa solo en móvil */}
+        <button
+          className="text-white md:hidden ml-4 focus:outline-none"
+          onClick={toggleMenu}
+          aria-label="Abrir menú"
+        >
+          <svg
+            className="w-7 h-7"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            {isOpen ? (
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            ) : (
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            )}
+          </svg>
+        </button>
+
+        {/* Menú normal en desktop */}
+        <div className="hidden md:flex space-x-6 ml-8">
           {navLinks.map(({ href, label }) => (
             <motion.a
               key={href}
@@ -88,6 +124,29 @@ function Header() {
           ))}
         </div>
       </div>
+
+      {/* Menú desplegable móvil */}
+      {isOpen && (
+        <motion.nav
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          className="md:hidden px-4 pb-4"
+        >
+          <ul className="flex flex-col space-y-4">
+            {navLinks.map(({ href, label }) => (
+              <a
+                key={href}
+                href={href}
+                className="text-white hover:text-cyan-400 text-lg font-medium transition-colors"
+                onClick={() => setIsOpen(false)}
+              >
+                {label}
+              </a>
+            ))}
+          </ul>
+        </motion.nav>
+      )}
     </motion.header>
   );
 }
