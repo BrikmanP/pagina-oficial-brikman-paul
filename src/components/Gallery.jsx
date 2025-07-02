@@ -16,7 +16,6 @@ const images = [
 
 function AnimatedImage({ src, alt, onClick, index }) {
   const ref = React.useRef(null);
-  // Detecta cada vez que la imagen está visible
   const inView = useInView(ref, { margin: "-100px" });
 
   return (
@@ -29,9 +28,16 @@ function AnimatedImage({ src, alt, onClick, index }) {
       draggable={false}
       onClick={onClick}
       initial={{ opacity: 0, y: 30, scale: 0.95 }}
-      animate={inView ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 30, scale: 0.95 }}
+      animate={
+        inView
+          ? { opacity: 1, y: 0, scale: 1 }
+          : { opacity: 0, y: 30, scale: 0.95 }
+      }
       transition={{ duration: 0.6, ease: "easeOut", delay: index * 0.1 }}
-      whileHover={{ scale: 1.07, boxShadow: "0 15px 30px rgba(0,0,0,0.35)" }}
+      whileHover={{
+        scale: 1.07,
+        boxShadow: "0 15px 30px rgba(0,0,0,0.35)",
+      }}
     />
   );
 }
@@ -71,7 +77,9 @@ export default function Gallery() {
 
     const handleKeyDown = (e) => {
       if (e.key === "ArrowRight") {
-        setExpandedIndex((prev) => (prev < images.length - 1 ? prev + 1 : prev));
+        setExpandedIndex((prev) =>
+          prev < images.length - 1 ? prev + 1 : prev
+        );
       } else if (e.key === "ArrowLeft") {
         setExpandedIndex((prev) => (prev > 0 ? prev - 1 : prev));
       } else if (e.key === "Escape") {
@@ -147,24 +155,34 @@ export default function Gallery() {
 
       <AnimatePresence>
         {expandedIndex !== null && (
-          <motion.div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80"
-            onClick={closeModal}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            <motion.img
-              src={images[expandedIndex]}
-              alt="Expanded"
-              className="max-w-[90vw] max-h-[90vh] rounded-xl shadow-2xl"
-              initial={{ scale: 0.8 }}
-              animate={{ scale: 1 }}
-              exit={{ scale: 0.8 }}
-              transition={{ duration: 0.3 }}
-              onClick={(e) => e.stopPropagation()}
-            />
-          </motion.div>
+         <motion.div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80 overflow-hidden"
+      onClick={closeModal}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
+      <motion.img
+    src={images[expandedIndex]}
+    alt="Expanded"
+    className="max-w-[90vw] max-h-[90vh] rounded-xl shadow-2xl pointer-events-auto"
+    initial={{ scale: 0.8, x: 0 }}
+    animate={{ scale: 1, x: 0 }}
+    exit={{ scale: 0.8, x: 0 }}
+    transition={{ duration: 0.3 }}
+    onClick={(e) => e.stopPropagation()}
+    drag="x"
+    dragConstraints={{ left: 0, right: 0 }}
+    onDragEnd={(event, info) => {
+      if (info.offset.x < -50 && expandedIndex < images.length - 1) {
+        setExpandedIndex(expandedIndex + 1);
+      } else if (info.offset.x >50 && expandedIndex > 0) {
+        setExpandedIndex(expandedIndex - 1);
+      }
+    }}
+  />
+</motion.div>
+
         )}
       </AnimatePresence>
     </section>

@@ -1,70 +1,30 @@
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
+import ReactPlayer from "react-player";
 
-const details = [
-  {
-    title: (
-      <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
-        Producción Musical
-        <br className="hidden md:block" />
-      </h1>
-    ),
-    description:
-      "Fl studio 21 Edicion Mezlca Materizacción",
-  },
-  {
-    title: (
-      <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
-        Desarrollo Web
-        <br className="hidden md:block" />
-      </h1>
-    ),
-    description:
-      "Gestión de usuarios.",
-  },
-  {
-    title: (
-      <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
-        Tecnologías Frontend
-        <br className="hidden md:block" />
-      </h1>
-    ),
-    description:
-      "Interfaces intuitivas y atractivas.",
-  },
-  {
-    title: (
-      <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
-        Backend y Bases de Datos
-        <br className="hidden md:block" />
-      </h1>
-    ),
-    description:
-      "Scripts en Java y JavaScript.",
-  },
-  {
-    title: (
-      <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
-        Metodologías Ágiles
-        <br className="hidden md:block" />
-      </h1>
-    ),
-    description:
-      "Implementación de proyectos en constante evolución usando metodologías ágiles para optimizar resultados y adaptabilidad.",
-  },
-];
-
-export default function Details() {
-  const [activeIndex, setActiveIndex] = useState(0);
-
+export default function Speciality() {
   return (
     <section
-      id="details"
-      className="min-h-screen bg-gradient-to-b from-[#9F5CFF] to-[#5B00A7] text-white flex items-center"
+      id="speciality"
+      className="relative min-h-screen flex items-center overflow-hidden px-6 py-20 text-white"
     >
-      <div className="container mx-auto px-4 md:flex md:items-center md:gap-16">
-        {/* Imagen izquierda */}
-        <div className="md:w-1/2 flex justify-center md:justify-start mb-10 md:mb-0">
+      {/* 🎥 Video de fondo */}
+      <ReactPlayer
+        url="https://youtu.be/RXnVWnfvEcA?si=0DViB_u4JVK9TIl6"
+        playing
+        loop
+        muted
+        width="100%"
+        height="100%"
+        className="absolute top-0 left-0 z-0 pointer-events-none"
+      />
+
+      {/* Capa oscura cristal */}
+      <div className="absolute inset-0 z-0 bg-black/50 backdrop-blur-md"></div>
+
+      {/* Contenido */}
+      <div className="relative z-10 container mx-auto px-4 flex flex-col md:flex-row md:items-center md:gap-16">
+        {/* Imagen personaje */}
+        <div className="w-full md:w-1/2 flex justify-center md:justify-start mb-10 md:mb-0">
           <img
             src="images/10691784.png"
             alt="Intro Personaje"
@@ -72,43 +32,43 @@ export default function Details() {
           />
         </div>
 
-        {/* Contenido derecho */}
-        <div className="md:w-1/2 flex">
-          {/* Lista de puntos vertical */}
-          <ul className="flex flex-col items-center md:items-start space-y-6 mr-10">
-            {details.map((item, index) => (
-              <li
-                key={index}
-                onClick={() => setActiveIndex(index)}
-                className={`w-5 h-5 rounded-full cursor-pointer transition-all ${
-                  activeIndex === index
-                    ? "bg-white scale-125 shadow-lg"
-                    : "bg-white/40 hover:bg-white"
-                }`}
-                title={`Detalle ${index + 1}`}
-              />
-            ))}
-          </ul>
+        {/* Texto manifiesto */}
+        <div className="w-full md:w-1/2 flex flex-col">
+          <motion.h1
+            initial={{ opacity: 0, y: -50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="text-4xl md:text-5xl font-extrabold mb-6"
+          >
+            Mi Especialidad
+          </motion.h1>
 
-          {/* Texto del detalle activo con animación */}
-          <div className="flex-1">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeIndex}
-                initial={{ opacity: 0, x: 50 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -50 }}
-                transition={{ duration: 0.6 }}
-              >
-                <h3 className="text-2xl font-semibold mb-4">
-                  {details[activeIndex].title}
-                </h3>
-                <p className="text-lg leading-relaxed">
-                  {details[activeIndex].description}
-                </p>
-              </motion.div>
-            </AnimatePresence>
-          </div>
+          <motion.p
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.3 }}
+            viewport={{ once: true }}
+            className="text-lg md:text-xl leading-relaxed text-justify md:text-left backdrop-blur-sm"
+          >
+            Soy Brikman Paul Morales, Desarrollador creativo
+            que desde 2010 fusiona música y tecnología para dar forma a ideas que
+            nacen en lo profundo de mi Alma Mental. Produzco beats cargados de
+            atmósferas oscuras, románticas y místicas, explorando la electrónica,
+            el EDM y el hip hop como vehículos para transformar emociones y
+            percepciones.
+            <br /><br />
+            Al mismo tiempo, como Ingeniero de Sistemas, diseño y desarrollo
+            interfaces y soluciones tecnológicas que potencian la experiencia
+            humana. Mi objetivo siempre ha sido crear puentes entre el arte y el
+            usuario, combinando sonido, imagen y código para narrar historias que
+            trasciendan lo cotidiano.
+            <br /><br />
+            Fundé Mente Y Alma Récords y el proyecto Spiritual Sounds porque creo
+            que cada beat y cada línea de código son portales para alterar la
+            realidad, expandir la imaginación y reinventar la forma en que vivimos
+            el arte.
+          </motion.p>
         </div>
       </div>
     </section>
